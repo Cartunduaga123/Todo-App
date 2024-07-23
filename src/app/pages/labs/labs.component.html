@@ -52,5 +52,16 @@
     <ng-template #miBloque>
         Soy Camilo y soy menor de 18 años
     </ng-template>
+    <hr />
+    <input type="text" [value]="person().name" (change)="changeName($event)">
+    <div [ngSwitch]="person().name">
+        <p *ngSwitchCase ="'camilo'">Yo soy Camilo</p>
+        <p *ngSwitchCase ="'julian'">Yo soy Julian</p>
+        <p *ngSwitchCase ="'andres'">Yo soy Andres</p>
+        <p *ngSwitchDefault>Yo no soy nadie</p>
+    </div>
+    <hr />
+    <input type="color" [formControl]="colorControl">
+    <p>color: {{ colorControl.value }}</p>
 
 </div>
