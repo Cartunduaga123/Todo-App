@@ -1,12 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { Task } from './../../models/task.model'
+import { Task } from './../../models/task.model';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
@@ -31,10 +34,21 @@ export class HomeComponent {
     
   ]);
 
-  changeHandler(event: Event) {
-    const input = event.target as HTMLInputElement;
-    const newTask = input.value;
-    this.addTask(newTask)
+  newTaskControl = new FormControl('', {
+    nonNullable: true,
+    validators: [
+      Validators.required,
+    ]
+  });
+
+  changeHandler() {
+    if(this.newTaskControl.valid) {
+      const value = this.newTaskControl.value.trim();
+      if(value !== '') {
+        this.addTask(value);
+        this.newTaskControl.setValue('');
+      }
+    }
   }
 
   addTask(title: string) {
@@ -60,6 +74,39 @@ export class HomeComponent {
           }
         }
         return task;
+      })
+    })
+  }
+
+  updateTaksEditingMode(index: number) {
+    this.tasks.update((tasks) => {
+      return tasks.map((task, position) => {
+        if(position === index){
+          return {
+            ...task,
+            editing: true
+          }
+        }
+        return {
+          ...task,
+          editing: false
+        };
+      })
+    })
+  }
+
+  updateTaksText(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.tasks.update((tasks) => {
+      return tasks.map((task, position) => {
+        if(position === index){
+          return {
+            ...task,
+            title: input.value,
+            editing: false
+          }
+        }
+        return task
       })
     })
   }

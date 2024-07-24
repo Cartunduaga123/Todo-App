@@ -55,13 +55,28 @@
     <hr />
     <input type="text" [value]="person().name" (change)="changeName($event)">
     <div [ngSwitch]="person().name">
-        <p *ngSwitchCase ="'camilo'">Yo soy Camilo</p>
-        <p *ngSwitchCase ="'julian'">Yo soy Julian</p>
-        <p *ngSwitchCase ="'andres'">Yo soy Andres</p>
+        <p *ngSwitchCase="'camilo'">Yo soy Camilo</p>
+        <p *ngSwitchCase="'julian'">Yo soy Julian</p>
+        <p *ngSwitchCase="'andres'">Yo soy Andres</p>
         <p *ngSwitchDefault>Yo no soy nadie</p>
     </div>
     <hr />
     <input type="color" [formControl]="colorControl">
     <p>color: {{ colorControl.value }}</p>
-
+    <svg>
+        <g>
+            <rect x="0" y="0" height="100" width="100" [attr.fill]="colorControl.value" />
+        </g>
+    </svg>
+    <hr />
+    <input type="number" [formControl]="widthControl">
+    <span class="box" [style.width.px]="widthControl.value"></span>
+    <hr />
+    <p>
+        <input type="text" [formControl]="nameControl"> <br />
+        <span class="message-error" [class.show]="nameControl.invalid && nameControl.touched">Nombre invalido</span>
+    </p>
+    <p>
+        <input type="text">
+    </p>
 </div>
